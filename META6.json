@@ -1,0 +1,19 @@
+{
+  "name": "LEB128",
+  "description": "Encoding and decoding of integers in the LEB128 encoding.",
+  "version": "0.1",
+  "perl": "6.*",
+  "authors": [
+    "Jonathan Worthington <jnthn@jnthn.net>"
+  ],
+  "auth": "jnthn",
+  "depends": [],
+  "build-depends": [],
+  "test-depends": [],
+  "provides": {
+    "LEB128": "lib/LEB128.pm6"
+  },
+  "resources": [],
+  "license": "Artistic-2.0",
+  "source-url": "https://github.com/jnthn/LEB128.git"
+}
