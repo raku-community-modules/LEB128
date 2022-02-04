@@ -4,7 +4,7 @@ multi sub encode-leb128-signed(Int $value is copy, Buf $target, int $offset = 0 
     my int $cur-offset = $offset;
     my Bool $more;
     repeat while $more {
-        my int $byte = $value +& 0b0111_1111;
+        my uint $byte = $value +& 0b0111_1111;
         $value +>= 7;
         $more = not (($value == 0 && $byte +& 0x40 == 0) ||
                  ($value == -1 && $byte +& 0x40 != 0));
@@ -26,7 +26,7 @@ multi sub encode-leb128-signed(Int $value --> Buf) is export {
 multi sub encode-leb128-unsigned(Int $value is copy, Buf $target, int $offset = 0 --> int) is export {
     my int $cur-offset = $offset;
     repeat while $value {
-        my int $byte = $value +& 0b0111_1111;
+        my uint $byte = $value +& 0b0111_1111;
         $value +>= 7;
         $byte +|= 0b1000_0000 if $value;
         $target[$cur-offset++] = $byte;
@@ -56,10 +56,10 @@ class X::LEB128::Incomplete is Exception {
 multi sub decode-leb128-unsigned(Buf $encoded, int $offset is copy, int $read is rw) is export {
     my int $limit = $encoded.elems;
     my Int $result = 0;
-    my int $shift = 0;
+    my uint $shift = 0;
     loop {
         die X::LEB128::Incomplete.new if $offset >= $limit;
-        my int $byte = $encoded[$offset++];
+        my uint $byte = $encoded[$offset++];
         $read++;
         $result +|= ($byte +& 0b0111_1111) +< $shift;
         last unless $byte +& 0b1000_0000;
@@ -83,10 +83,10 @@ multi sub decode-leb128-unsigned(Buf $encoded --> Int) is export {
 multi sub decode-leb128-signed(Buf $encoded, int $offset is copy, int $read is rw) is export {
     my int $limit = $encoded.elems;
     my Int $result = 0;
-    my int $shift = 0;
+    my uint $shift = 0;
     loop {
         die X::LEB128::Incomplete.new if $offset >= $limit;
-        my int $byte = $encoded[$offset++];
+        my uint $byte = $encoded[$offset++];
         $read++;
         $result +|= ($byte +& 0b0111_1111) +< $shift;
         $shift += 7;
