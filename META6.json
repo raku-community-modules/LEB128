@@ -1,12 +1,12 @@
 {
   "name": "LEB128",
   "description": "Encoding and decoding of integers in the LEB128 encoding.",
-  "version": "0.1",
+  "version": "1.0",
   "perl": "6.*",
   "authors": [
     "Jonathan Worthington <jnthn@jnthn.net>"
   ],
-  "auth": "jnthn",
+  "auth": "zef:jnthn",
   "depends": [],
   "build-depends": [],
   "test-depends": [],
