@@ -1,3 +1,91 @@
+=begin pod
+
+=head1 NAME
+
+LEB128 - Encoding and decoding of integers in the LEB128 encoding
+
+=head1 SYNOPSIS
+
+=begin code :lang<raku>
+
+use LEB128;
+
+my $buf-eu = encode-leb128-unsigned(1234);
+my $buf-es = encode-leb128-signed(-1234);
+
+=end code
+
+=head1 DESCRIPTION
+
+L<LEB128 or Little Endian Base 128|https://en.wikipedia.org/wiki/LEB128>
+is a variable-length encoding of integers - that is, it aims to store
+integers of different sizes efficiently. It is used in the DWARF debug
+information format, Web Assembly, and other formats and protocols. This
+Raku module provides both encoding and decoding.
+
+=head1 Encoding
+
+There are both signed and unsigned encoding functions,
+C<encode-leb128-signed> and C<encode-leb128-unsigned> respectively. Both
+are C<multi>s with candidates that take an C<Int> and return a C<Buf>
+with the encoded value:
+
+=begin code :lang<raku>
+
+my $buf-eu = encode-leb128-unsigned(1234);
+my $buf-es = encode-leb128-signed(-1234);
+
+=end code
+
+Or to write the encoded C<Int> into a C<Buf> and return the number of
+bytes written, which is often more efficient since it avoids the
+creation of a temporary C<Buf>:
+
+=begin code :lang<raku>
+
+my $buf = Buf.new;
+my $offset = 0;
+$offset += encode-leb128-unsigned(1234, $buf, $offset);
+
+=end code
+
+=head1 Decoding
+
+There are both signed and unsigned decoding functions,
+C<decode-leb128-signed> and C<decode-leb128-unsigned> respectively.
+Both are C<multi>s with candidates that take a C<Buf> and try to
+decode an C<Int> from the start of it, returning that C<Int>:
+
+=begin code :lang<raku>
+
+my $value-du = decode-leb128-unsigned($entire-buffer-u);
+my $value-ds = decode-leb128-signed($entire-buffer-s);
+
+=end code
+
+Or that decode the value from a specified offset in a given buffer,
+and use an C<rw> parameter of type C<int>, which is incremented by
+the number of bytes consumed.
+
+=begin code :lang<raku>
+
+my int $read;
+my $value = decode-leb128-unsigned($buffer, $offset, $read);
+
+=end code
+
+To have the offset updated, it may be passed as both parameters:
+
+=begin code :lang<raku>
+
+my $value = decode-leb128-unsigned($buffer, $offset, $offset);
+
+=end code
+
+=head1 Method reference
+
+=end pod
+
 #| Encodes the provided signed value into the target buffer at the
 #| given offset, returning the number of bytes produced.
 multi sub encode-leb128-signed(Int $value is copy, Buf $target, int $offset = 0 --> int) is export {
@@ -107,3 +195,19 @@ multi sub decode-leb128-signed(Buf $encoded --> Int) is export {
     my int $offset = 0;
     decode-leb128-signed($encoded, $offset, $throwaway)
 }
+
+=begin pod
+
+=head1 AUTHOR
+
+Jonathan Worthington
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2020 - 2024 Jonathan Worthington
+
+Copyright 2024 Raku Community
+
+This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
+
+=end pod

@@ -1,19 +1,25 @@
 {
-  "name": "LEB128",
-  "description": "Encoding and decoding of integers in the LEB128 encoding.",
-  "version": "0.1",
-  "perl": "6.*",
+  "auth": "zef:raku-community-modules",
   "authors": [
     "Jonathan Worthington <jnthn@jnthn.net>"
   ],
-  "auth": "jnthn",
-  "depends": [],
-  "build-depends": [],
-  "test-depends": [],
-  "provides": {
-    "LEB128": "lib/LEB128.pm6"
-  },
-  "resources": [],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "Encoding and decoding of integers in the LEB128 encoding",
   "license": "Artistic-2.0",
-  "source-url": "https://github.com/jnthn/LEB128.git"
+  "name": "LEB128",
+  "perl": "6.*",
+  "provides": {
+    "LEB128": "lib/LEB128.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "https://github.com/raku-community-modules/LEB128.git",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.1"
 }
